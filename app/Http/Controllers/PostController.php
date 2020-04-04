@@ -4,7 +4,7 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Post;
-use Illuminate\Support\Str;
+use App\User;
 
 
 class PostController extends Controller
@@ -13,7 +13,37 @@ class PostController extends Controller
 	public function index()
 	{
 		$posts = Post::paginate(5);
-
-		return $posts;		
+		return view('post/index', ['posts' => $posts]);
 	}
+
+	public function create()
+	{
+		$users = User::all();
+		return view('post/create', ['users' => $users]);
+	}
+
+	public function store(Request $request)
+	{
+		$validator = \Validator::make($request->all(), [
+			'title' => 'required',
+			'content' => 'required',
+			'user_id' => 'required',
+		]);
+
+		if($validator->fails()){
+			return redirect()->route('post.create')->withErrors($validator)->withInput();
+		}
+		Post::create($request->all());
+
+		return redirect()->route('post.index')->with('success', 'Post created successfully!');
+	}
+
+	public function destroy($id)
+	{
+		$post = Post::findOrFail($id);
+		$post->delete();
+		return redirect()->route('post.index')->with('success', 'Post deleted successfully!');
+	}
+	
+
 }

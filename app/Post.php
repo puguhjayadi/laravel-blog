@@ -9,7 +9,7 @@ class Post extends Model
 {
 	protected $table = 'posts';
 
-	protected $fillable = ['title', 'slug', 'content'];
+	protected $fillable = ['user_id','title', 'slug', 'content'];
 
 	protected static function boot()
 	{
