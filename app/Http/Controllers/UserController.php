@@ -10,8 +10,6 @@ class UserController extends Controller
 {
 	public function index()
 	{
-		// $users = User::paginate(10);
-
 		$users = Comment::whereIn('email', function ($query) {
 			$query->select('email')->from('users');
 		})->paginate(10);
