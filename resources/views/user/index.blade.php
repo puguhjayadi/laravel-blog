@@ -6,7 +6,7 @@
 <div class="container-fluid">
 
 	<!-- Page Heading -->
-	<h1 class="h3 mb-2 text-gray-800">User</h1>
+	<h1 class="h3 mb-2 text-gray-800">User List</h1>
 
 	<!-- DataTales Example -->
 	<div class="card shadow mb-4">
@@ -26,7 +26,7 @@
 					<thead>
 						<tr>
 							<th>No</th>
-							<th>User Author</th>
+							<th>User</th>
 							<th>Comment</th>
 						</tr>
 					</thead>

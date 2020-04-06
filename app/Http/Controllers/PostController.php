@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use App\Post;
 use App\User;
+use DB;
 
 
 class PostController extends Controller
@@ -24,6 +25,7 @@ class PostController extends Controller
 
 	public function store(Request $request)
 	{
+
 		$validator = \Validator::make($request->all(), [
 			'title' => 'required',
 			'content' => 'required',
@@ -33,9 +35,20 @@ class PostController extends Controller
 		if($validator->fails()){
 			return redirect()->route('post.create')->withErrors($validator)->withInput();
 		}
-		Post::create($request->all());
 
-		return redirect()->route('post.index')->with('success', 'Post created successfully!');
+		DB::beginTransaction();
+
+		try {
+
+			Post::create($request->all());
+			DB::commit();
+
+			return redirect()->route('post.index')->with('success', 'Post created successfully!');
+
+		} catch(\Exception $e){
+			DB::rollback();
+			return response()->json(['message' => $e->getMessage() ]);
+		}
 	}
 
 	public function destroy($id)
